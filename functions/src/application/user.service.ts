@@ -12,8 +12,17 @@ export class UserService {
   async createUser(
     email: string
   ): Promise<User> {
-    const user = UserFactory.create(email);
-    await this.userRepository.create(user);
-    return user;
+    try {
+      const existingUser = await this.userRepository.findByEmail(email);
+      if (existingUser) {
+        throw new Error("User already exists");
+      }
+      const user = UserFactory.create(email);
+      await this.userRepository.create(user);
+      return user;
+    } catch (error) {
+      console.error("Error creating user:", error);
+      throw new Error("Could not create user");
+    }
   }
 }

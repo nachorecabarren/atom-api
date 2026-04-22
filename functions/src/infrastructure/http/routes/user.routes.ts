@@ -11,7 +11,7 @@ const userRepository = new UserFirestoreRepository();
 const userService = new UserService(userRepository);
 const userController = new UserController(userService);
 
-router.post("/", userController.createUser);
-router.get("/:email", userController.findUserByEmail);
+router.post("/", userController.createUser.bind(userController));
+router.get("/:email", userController.findUserByEmail.bind(userController));
 
 export default router;
