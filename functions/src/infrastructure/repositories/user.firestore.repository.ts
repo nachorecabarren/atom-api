@@ -15,7 +15,13 @@ export class UserFirestoreRepository implements IUserRepository {
 
     const doc = snapshot.docs[0];
     const data = doc.data();
-    return new User(doc.id, data.email, data.createdAt.toDate());
+    let createdAt: Date;
+    if (data.createdAt && typeof data.createdAt.toDate === "function") {
+      createdAt = data.createdAt.toDate();
+    } else {
+      createdAt = data.createdAt || new Date();
+    }
+    return new User(doc.id, data.email, createdAt);
   }
 
   async create(user: User): Promise<User> {

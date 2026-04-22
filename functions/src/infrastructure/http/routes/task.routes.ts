@@ -11,10 +11,10 @@ const taskRepository = new TaskFirestoreRepository();
 const taskService = new TaskService(taskRepository);
 const taskController = new TaskController(taskService);
 
-router.post("/", taskController.createTask);
-router.get("/user/:userId", taskController.getTasksByUser);
-router.get("/:id", taskController.getTaskById);
-router.delete("/:id", taskController.deleteTask);
-router.put("/:id/status", taskController.updateTaskStatus);
+router.post("/", taskController.createTask.bind(taskController));
+router.get("/user/:userId", taskController.getTasksByUser.bind(taskController));
+router.get("/:id", taskController.getTaskById.bind(taskController));
+router.delete("/:id", taskController.deleteTask.bind(taskController));
+router.put("/:id/status", taskController.updateTaskStatus.bind(taskController));
 
 export default router;
