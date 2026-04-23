@@ -16,5 +16,6 @@ router.get("/user/:userId", taskController.getTasksByUser.bind(taskController));
 router.get("/:id", taskController.getTaskById.bind(taskController));
 router.delete("/:id", taskController.deleteTask.bind(taskController));
 router.put("/:id/status", taskController.updateTaskStatus.bind(taskController));
+router.put("/:id", taskController.updateTask.bind(taskController));
 
 export default router;

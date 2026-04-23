@@ -58,6 +58,7 @@ export class TaskFirestoreRepository implements ITaskRepository {
     await docRef.update({
       title: task.title,
       description: task.description,
+      status: task.status,
     });
     return task;
   }
