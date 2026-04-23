@@ -23,7 +23,7 @@ export class UserController {
 
   async findUserByEmail(req: Request, res: Response) {
     try {
-      const { email } = req.query;
+      const { email } = req.params;
 
       if (!email || typeof email !== "string") {
         return res.status(400).json({ message: "Missing or invalid email" });
@@ -31,7 +31,7 @@ export class UserController {
 
       const user = await this.userService.findUserByEmail(email);
 
-      return res.status(200).json(user);
+      return res.status(200).json({ user: user ?? null });
     } catch (error) {
       return res.status(500).json({ message: "Server error" });
     }

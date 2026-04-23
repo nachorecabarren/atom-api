@@ -6,11 +6,10 @@
  *
  * See a full list of supported triggers at https://firebase.google.com/docs/functions
  */
-import express from "express";
+import express, { Request, Response, NextFunction } from "express";
 import { setGlobalOptions } from "firebase-functions";
 import { onRequest } from "firebase-functions/https";
 import routes from "./infrastructure/http/routes";
-
 
 // Start writing functions
 // https://firebase.google.com/docs/functions/typescript
@@ -33,6 +32,21 @@ setGlobalOptions({ maxInstances: 10 });
 // });
 
 const app = express();
+
+app.use((req: Request, res: Response, next: NextFunction) => {
+  const origin = req.headers.origin || "http://localhost:4200";
+  res.setHeader("Access-Control-Allow-Origin", origin);
+  res.setHeader("Access-Control-Allow-Credentials", "true");
+  res.setHeader("Access-Control-Allow-Methods", "GET,POST,PUT,DELETE,OPTIONS");
+  res.setHeader("Access-Control-Allow-Headers", "Content-Type,Authorization");
+  if (req.method === "OPTIONS") {
+    res.status(204).end();
+    return;
+  }
+  next();
+});
+
 app.use(express.json());
 app.use("/", routes);
+
 export const api = onRequest(app);
