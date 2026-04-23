@@ -18,8 +18,7 @@ export class UserService {
         throw new Error("User already exists");
       }
       const user = UserFactory.create(email);
-      await this.userRepository.create(user);
-      return user;
+      return this.userRepository.create(user);
     } catch (error) {
       console.error("Error creating user:", error);
       throw new Error("Could not create user");

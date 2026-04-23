@@ -24,6 +24,18 @@ export class TaskService {
     return await this.taskRepository.findById(id);
   }
 
+  async updateTask(
+    id: string,
+    title: string,
+    description: string,
+  ): Promise<Task | null> {
+    const task = await this.taskRepository.findById(id);
+    if (!task) return null;
+    task.title = title;
+    task.description = description;
+    return this.taskRepository.update(task);
+  }
+
   async updateTaskStatus(id: string, status: TaskStatus): Promise<Task | null> {
     const task = await this.taskRepository.findById(id);
     if (!task) {

@@ -58,6 +58,31 @@ export class TaskController {
     }
   }
 
+  async updateTask(req: Request<Params>, res: Response) {
+    try {
+      const { id } = req.params;
+      const { title, description } = req.body;
+
+      if (!title || !description) {
+        return res.status(400).json({ message: "Missing fields" });
+      }
+
+      const updatedTask = await this.taskService.updateTask(
+        id,
+        title,
+        description,
+      );
+
+      if (!updatedTask) {
+        return res.status(404).json({ message: "Task not found" });
+      }
+
+      return res.status(200).json(updatedTask);
+    } catch (error) {
+      return res.status(500).json({ message: "Server error" });
+    }
+  }
+
   async updateTaskStatus(req: Request<Params>, res: Response) {
     try {
       const { id } = req.params;
