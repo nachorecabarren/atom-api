@@ -13,5 +13,6 @@ const userController = new UserController(userService);
 
 router.post("/", userController.createUser.bind(userController));
 router.get("/:email", userController.findUserByEmail.bind(userController));
+router.post("/logout", userController.logout.bind(userController));
 
 export default router;

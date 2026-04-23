@@ -12,8 +12,7 @@ export class TaskService {
     userId: string,
   ): Promise<Task> {
     const task = TaskFactory.create(title, description, userId);
-    await this.taskRepository.create(task);
-    return task;
+    return this.taskRepository.create(task);
   }
 
   async findTasksByUser(userId: string): Promise<Task[]> {
