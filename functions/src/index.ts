@@ -10,6 +10,7 @@ import express, { Request, Response, NextFunction } from "express";
 import { setGlobalOptions } from "firebase-functions";
 import { onRequest } from "firebase-functions/https";
 import routes from "./infrastructure/http/routes";
+import cookieParser from "cookie-parser";
 
 // Start writing functions
 // https://firebase.google.com/docs/functions/typescript
@@ -46,6 +47,7 @@ app.use((req: Request, res: Response, next: NextFunction) => {
   next();
 });
 
+app.use(cookieParser());
 app.use(express.json());
 app.use("/", routes);
 

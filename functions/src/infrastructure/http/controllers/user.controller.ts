@@ -1,5 +1,6 @@
 import { Request, Response } from "express";
 import { UserService } from "../../../application/user.service";
+import { generateToken } from "../../utils/auth.helper";
 
 export class UserController {
   constructor(private userService: UserService) {}
@@ -12,8 +13,14 @@ export class UserController {
       if (!email) {
         return res.status(400).json({ message: "Missing user email" });
       }
-
       const user = await this.userService.createUser(email);
+      const token = generateToken(user.id, user.email);
+      res.cookie("auth_token", token, {
+        httpOnly: true,
+        secure: false,
+        sameSite: "strict",
+        maxAge: 24 * 60 * 60 * 1000,
+      });
 
       return res.status(201).json(user);
     } catch (error) {
@@ -30,10 +37,24 @@ export class UserController {
       }
 
       const user = await this.userService.findUserByEmail(email);
+      if (user) {
+        const token = generateToken(user.id, user.email);
+        res.cookie("auth_token", token, {
+          httpOnly: true,
+          secure: false,
+          sameSite: "strict",
+          maxAge: 24 * 60 * 60 * 1000,
+        });
+      }
 
       return res.status(200).json({ user: user ?? null });
     } catch (error) {
       return res.status(500).json({ message: "Server error" });
     }
+  }
+
+  async logout(req: Request, res: Response) {
+    res.clearCookie("auth_token");
+    return res.status(200).json({ message: "Logged out" });
   }
 }
