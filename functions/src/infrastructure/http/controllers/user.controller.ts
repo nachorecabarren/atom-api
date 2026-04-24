@@ -24,7 +24,8 @@ export class UserController {
 
       return res.status(201).json(user);
     } catch (error) {
-      return res.status(500).json({ message: "Server error" });
+      const message = error instanceof Error ? error.message : "Server error";
+      return res.status(500).json({ message });
     }
   }
 
@@ -49,7 +50,8 @@ export class UserController {
 
       return res.status(200).json({ user: user ?? null });
     } catch (error) {
-      return res.status(500).json({ message: "Server error" });
+      const message = error instanceof Error ? error.message : "Server error";
+      return res.status(500).json({ message });
     }
   }
 

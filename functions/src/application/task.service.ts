@@ -5,22 +5,36 @@ import { Task, TaskStatus } from "../domain/entities/task.entity";
 export class TaskService {
   constructor(private taskRepository: ITaskRepository) {}
 
-
   async createTask(
     title: string,
     description: string,
     userId: string,
   ): Promise<Task> {
-    const task = TaskFactory.create(title, description, userId);
-    return this.taskRepository.create(task);
+    try {
+      const task = TaskFactory.create(title, description, userId);
+      return await this.taskRepository.create(task);
+    } catch (error) {
+      console.error("Error creating task:", error);
+      throw new Error("Could not create task");
+    }
   }
 
   async findTasksByUser(userId: string): Promise<Task[]> {
-    return await this.taskRepository.findAllByUser(userId);
+    try {
+      return await this.taskRepository.findAllByUser(userId);
+    } catch (error) {
+      console.error("Error fetching tasks for user:", error);
+      throw new Error("Could not fetch tasks");
+    }
   }
 
   async findTaskById(id: string): Promise<Task | null> {
-    return await this.taskRepository.findById(id);
+    try {
+      return await this.taskRepository.findById(id);
+    } catch (error) {
+      console.error("Error fetching task by id:", error);
+      throw new Error("Could not fetch task");
+    }
   }
 
   async updateTask(
@@ -28,24 +42,39 @@ export class TaskService {
     title: string,
     description: string,
   ): Promise<Task | null> {
-    const task = await this.taskRepository.findById(id);
-    if (!task) return null;
-    task.title = title;
-    task.description = description;
-    return this.taskRepository.update(task);
+    try {
+      const task = await this.taskRepository.findById(id);
+      if (!task) return null;
+      task.title = title;
+      task.description = description;
+      return await this.taskRepository.update(task);
+    } catch (error) {
+      console.error("Error updating task:", error);
+      throw new Error("Could not update task");
+    }
   }
 
   async updateTaskStatus(id: string, status: TaskStatus): Promise<Task | null> {
-    const task = await this.taskRepository.findById(id);
-    if (!task) {
-      return null;
+    try {
+      const task = await this.taskRepository.findById(id);
+      if (!task) {
+        return null;
+      }
+      task.status = status;
+      await this.taskRepository.update(task);
+      return task;
+    } catch (error) {
+      console.error("Error updating task status:", error);
+      throw new Error("Could not update task status");
     }
-    task.status = status;
-    await this.taskRepository.update(task);
-    return task;
   }
 
   async deleteTask(id: string): Promise<void> {
-    await this.taskRepository.delete(id);
+    try {
+      await this.taskRepository.delete(id);
+    } catch (error) {
+      console.error("Error deleting task:", error);
+      throw new Error("Could not delete task");
+    }
   }
 }
