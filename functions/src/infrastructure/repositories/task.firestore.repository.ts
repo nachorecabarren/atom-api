@@ -31,7 +31,9 @@ export class TaskFirestoreRepository implements ITaskRepository {
 
   async findAllByUser(userId: string): Promise<Task[]> {
     try {
-      const snapshot = await this.collection.where("userId", "==", userId).get();
+      const snapshot = await this.collection
+        .where("userId", "==", userId)
+        .get();
       return snapshot.docs.map((doc) => {
         const data = doc.data();
         return new Task(
