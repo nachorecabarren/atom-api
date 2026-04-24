@@ -35,6 +35,10 @@ setGlobalOptions({ maxInstances: 10 });
 const app = express();
 
 app.use((req: Request, res: Response, next: NextFunction) => {
+  [
+    "http://localhost:4200",
+    "https://atom-challenge-a52c7.web.app",
+  ];
   const origin = req.headers.origin || "http://localhost:4200";
   res.setHeader("Access-Control-Allow-Origin", origin);
   res.setHeader("Access-Control-Allow-Credentials", "true");

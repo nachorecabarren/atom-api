@@ -17,8 +17,8 @@ export class UserController {
       const token = generateToken(user.id, user.email);
       res.cookie("auth_token", token, {
         httpOnly: true,
-        secure: false,
-        sameSite: "strict",
+        secure: true,
+        sameSite: "none",
         maxAge: 24 * 60 * 60 * 1000,
       });
 
@@ -42,8 +42,8 @@ export class UserController {
         const token = generateToken(user.id, user.email);
         res.cookie("auth_token", token, {
           httpOnly: true,
-          secure: false,
-          sameSite: "strict",
+          secure: true,
+          sameSite: "none",
           maxAge: 24 * 60 * 60 * 1000,
         });
       }
