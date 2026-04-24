@@ -6,7 +6,12 @@ export class UserService {
   constructor(private userRepository: IUserRepository) {}
 
   async findUserByEmail(email: string): Promise<User | null> {
-    return await this.userRepository.findByEmail(email);
+    try {
+      return await this.userRepository.findByEmail(email);
+    } catch (error) {
+      console.error("Error finding user by email:", error);
+      throw new Error("Could not find user");
+    }
   }
 
   async createUser(
@@ -18,10 +23,10 @@ export class UserService {
         throw new Error("User already exists");
       }
       const user = UserFactory.create(email);
-      return this.userRepository.create(user);
+      return await this.userRepository.create(user);
     } catch (error) {
       console.error("Error creating user:", error);
-      throw new Error("Could not create user");
+      throw error instanceof Error ? error : new Error("Could not create user");
     }
   }
 }

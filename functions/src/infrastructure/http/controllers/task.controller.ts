@@ -26,7 +26,8 @@ export class TaskController {
 
       return res.status(201).json(task);
     } catch (error) {
-      return res.status(500).json({ message: "Server error" });
+      const message = error instanceof Error ? error.message : "Server error";
+      return res.status(500).json({ message });
     }
   }
 
@@ -38,7 +39,8 @@ export class TaskController {
 
       return res.status(200).json(tasks);
     } catch (error) {
-      return res.status(500).json({ message: "Server error" });
+      const message = error instanceof Error ? error.message : "Server error";
+      return res.status(500).json({ message });
     }
   }
 
@@ -54,7 +56,8 @@ export class TaskController {
 
       return res.status(200).json(task);
     } catch (error) {
-      return res.status(500).json({ message: "Server error" });
+      const message = error instanceof Error ? error.message : "Server error";
+      return res.status(500).json({ message });
     }
   }
 
@@ -79,7 +82,8 @@ export class TaskController {
 
       return res.status(200).json(updatedTask);
     } catch (error) {
-      return res.status(500).json({ message: "Server error" });
+      const message = error instanceof Error ? error.message : "Server error";
+      return res.status(500).json({ message });
     }
   }
 
@@ -100,7 +104,8 @@ export class TaskController {
 
       return res.status(200).json(updatedTask);
     } catch (error) {
-      return res.status(500).json({ message: "Server error" });
+      const message = error instanceof Error ? error.message : "Server error";
+      return res.status(500).json({ message });
     }
   }
 
@@ -112,7 +117,8 @@ export class TaskController {
 
       return res.status(204).send();
     } catch (error) {
-      return res.status(500).json({ message: "Server error" });
+      const message = error instanceof Error ? error.message : "Server error";
+      return res.status(500).json({ message });
     }
   }
 }
